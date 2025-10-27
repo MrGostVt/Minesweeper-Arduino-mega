@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "author": "Виталий Борисенко",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-arduino-mega",
+      "id": "mega",
+      "top": -174.4,
+      "left": 256.6,
+      "rotate": 90,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-analog-joystick",
+      "id": "joystick1",
+      "top": 191.4,
+      "left": 34.2,
+      "attrs": {}
+    },
+    { "type": "wokwi-ili9341", "id": "lcd1", "top": -172, "left": -0.3, "attrs": {} }
+  ],
+  "connections": [
+    [ "mega:5V", "joystick1:VCC", "red", [ "h-89.03", "v293.48", "h-249.6", "v124.8" ] ],
+    [ "joystick1:VERT", "mega:A0", "green", [ "v57.6", "h249.6", "v-431.88" ] ],
+    [ "joystick1:GND", "mega:GND.3", "black", [ "h211.2", "v-399.03" ] ],
+    [ "joystick1:HORZ", "mega:A1", "green", [ "v48", "h240", "v-412.78" ] ],
+    [ "mega:A2", "joystick1:SEL", "green", [ "h-31.43", "v393.68", "h-230.4" ] ],
+    [ "lcd1:VCC", "mega:5V", "red", [ "v38.4", "h249.6", "v-264.68" ] ],
+    [ "lcd1:GND", "mega:GND.2", "black", [ "v28.8", "h259.2", "v-240" ] ],
+    [ "lcd1:LED", "mega:5V", "red", [ "v19.2", "h163.19", "v-245.48" ] ],
+    [ "lcd1:MISO", "mega:50", "green", [ "v9.6", "h278.39", "v-36.2" ] ],
+    [ "lcd1:SCK", "mega:52", "white", [ "v9.6", "h278.39", "v-36.2" ] ],
+    [ "lcd1:MOSI", "mega:51", "gray", [ "v9.6", "h297.59", "v-9.6", "h1" ] ],
+    [ "lcd1:D/C", "mega:9", "violet", [ "v9.6", "h499.2", "v-229.7" ] ],
+    [ "lcd1:CS", "mega:10", "yellow", [ "v9.6", "h518.4", "v-239.7" ] ],
+    [ "lcd1:RST", "mega:8", "cyan", [ "v9.6", "h508.8", "v-220.8" ] ]
+  ],
+  "dependencies": {}
+}
