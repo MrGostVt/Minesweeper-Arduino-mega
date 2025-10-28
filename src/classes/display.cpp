@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <headers/display.h>
+#include <headers/utils.h>
 
 Display::Display(int cs, int dc, int rst, int width, int height): TFT_CS(cs), TFT_DC(dc), TFT_RST(rst), WIDTH(width), HEIGHT(height){}
 
@@ -156,11 +157,38 @@ void Display::drawImage(const uint16_t *img, int img_len, int w, int h, int x, i
     }
 }
 
-void Display::drawFieldByImages(ImageBmp<100> *imgs, int ceil_size,int imgs_count, int (&field)[20][20], int field_w, int field_h){
+void Display::drawFieldByImages(ImageBmp<100> *imgs, int cell_size,int imgs_count, int (&field)[20][20], int field_w, int field_h){
   for(int j = 0; j < field_h; j++){
     for(int i = 0; i < field_w; i++){
       int id = field[j][i];
-      drawImage(imgs[id].getImageData(), imgs[id].getWidth(), ceil_size, ceil_size, i * ceil_size, j*ceil_size);
+      ImageBmp<100> currentCeil = imgs[id];
+      if(id > 5){
+        currentCeil = imgs[0];
+      }
+      
+      drawImage(currentCeil.getImageData(), currentCeil.getWidth(), cell_size, cell_size, i * cell_size, j*cell_size);
+      
+      if(id > 5){
+        drawImageOnUpperLayer(numberImages[id-5-1].getImageData(), numberImages[id-5-1].getWidth(), cell_size, cell_size, i * cell_size, j*cell_size);
+      }
+    }
+  }
+}
+
+void Display::drawImageOnUpperLayer(const uint16_t *img, int img_len, int w, int h, int x, int y){
+  int pixel_size = 1;
+  if(w == h){
+    if(img_len != w){
+      pixel_size = w / img_len;
+    }
+  }
+
+  for(int j = 0; j < h; j++){
+    for(int i = 0; i < w; i++){
+      int index = j/pixel_size * img_len + i/pixel_size;
+      if(img[index] != 0xffff){
+        drawPixel(i + x, j + y, img[index]);
+      }
     }
   }
 }

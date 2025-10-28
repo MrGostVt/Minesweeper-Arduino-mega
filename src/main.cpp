@@ -15,56 +15,68 @@
 #define TFT_WIDTH  240
 #define TFT_HEIGHT 320
 
+//Joystick pins
+#define VRX_PIN A0
+#define VRY_PIN A1
+#define SW_PIN  A2
+
 //rgb565 macros
 #define COLOR565(r, g, b) ((((r) & 0xF8) << 8) | (((g) & 0xFC) << 3) | ((b) >> 3))
 
-//images
-uint16_t grassImage[100] = {
-  0x0540, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x0540, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 
-  0x0540, 0x02a0, 0x0540, 0x0540, 0x02a0, 0x02a0, 0x02a0, 0x0540, 0x0540, 0x02a0, 
-  0x02a0, 0x02a0, 0x0540, 0x02a0, 0x02a0, 0x0540, 0x02a0, 0x02a0, 0x0540, 0x02a0, 
-  0x0540, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x0540, 0x0540, 0x02a0, 0x02a0, 0x02a0, 
-  0x0540, 0x0540, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x0540, 
-  0x02a0, 0x02a0, 0x0540, 0x02a0, 0x02a0, 0x0540, 0x02a0, 0x02a0, 0x02a0, 0x0540, 
-  0x02a0, 0x0540, 0x0540, 0x02a0, 0x02a0, 0x0540, 0x0540, 0x02a0, 0x02a0, 0x02a0, 
-  0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 
-  0x0540, 0x02a0, 0x02a0, 0x0540, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x0540, 0x02a0, 
-  0x0540, 0x02a0, 0x02a0, 0x0540, 0x0540, 0x02a0, 0x02a0, 0x0540, 0x0540, 0x02a0
-};
-uint16_t grassFlagImage[100] = {
-  0x0540, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 0x0540, 0x02a0, 0x02a0, 0x02a0, 0x02a0, 
-  0x0540, 0x02a0, 0xc000, 0xc000, 0xf800, 0xf800, 0xc000, 0xc000, 0x0540, 0x02a0, 
-  0x02a0, 0xc000, 0xc000, 0xc000, 0xf800, 0xf800, 0xc000, 0xc000, 0xc000, 0x02a0, 
-  0x0540, 0xc000, 0xc000, 0xf800, 0xf800, 0xf800, 0xf800, 0xc000, 0xc000, 0x02a0, 
-  0x0540, 0xf800, 0xf800, 0xf800, 0xc000, 0xc000, 0xf800, 0xf800, 0xf800, 0x0540, 
-  0x02a0, 0xf800, 0xf800, 0xf800, 0xc000, 0xc000, 0xf800, 0xf800, 0xf800, 0x0540, 
-  0x02a0, 0xc000, 0xc000, 0xf800, 0xf800, 0xf800, 0xf800, 0xc000, 0xc000, 0x02a0, 
-  0x02a0, 0xc000, 0xc000, 0xc000, 0xf800, 0xf800, 0xc000, 0xc000, 0xc000, 0x02a0, 
-  0x0540, 0x02a0, 0xc000, 0xc000, 0xf800, 0xf800, 0xc000, 0xc000, 0x0540, 0x02a0, 
-  0x0540, 0x02a0, 0x02a0, 0x0540, 0x0540, 0x02a0, 0x02a0, 0x0540, 0x0540, 0x02a0
-};
-uint16_t sandImage[100] = {
-  0xffef, 0xd6ad, 0xffef, 0xffef, 0xd6ad, 0xffef, 0xd6ad, 0xffef, 0xffef, 0xd6ad, 
-  0xffef, 0xffef, 0xffef, 0xd6ad, 0xffef, 0xd6ad, 0xffef, 0xd6ad, 0xffef, 0xd6ad, 
-  0xd6ad, 0xd6ad, 0xffef, 0xd6ad, 0xffef, 0xd6ad, 0xffef, 0xd6ad, 0xd6ad, 0xffef, 
-  0xffef, 0xffef, 0xd6ad, 0xffef, 0xd6ad, 0xd6ad, 0xd6ad, 0xffef, 0xffef, 0xffef, 
-  0xffef, 0xffef, 0xd6ad, 0xffef, 0xd6ad, 0xd6ad, 0xd6ad, 0xd6ad, 0xffef, 0xd6ad, 
-  0xd6ad, 0xffef, 0xffef, 0xd6ad, 0xd6ad, 0xd6ad, 0xd6ad, 0xd6ad, 0xffef, 0xd6ad, 
-  0xd6ad, 0xd6ad, 0xffef, 0xd6ad, 0xd6ad, 0xd6ad, 0xd6ad, 0xffef, 0xffef, 0xffef, 
-  0xffef, 0xffef, 0xffef, 0xd6ad, 0xd6ad, 0xd6ad, 0xffef, 0xd6ad, 0xd6ad, 0xffef, 
-  0xffef, 0xffef, 0xd6ad, 0xffef, 0xffef, 0xd6ad, 0xffef, 0xd6ad, 0xffef, 0xd6ad, 
-  0xd6ad, 0xd6ad, 0xffef, 0xffef, 0xffef, 0xffef, 0xd6ad, 0xffef, 0xffef, 0xd6ad
-};
-
 Display displayController(0,0,0,0,0);
+Minesweep game;
+
+
+void drawField(){
+  auto& field = game.getField();
+  displayController.drawFieldByImages(
+    images, game.getCellSize(), 6, field, game.getFieldWidth(), game.getFieldHeight() 
+  );
+
+  int x = game.pointerX(true) * game.getCellSize();
+  int y = game.pointerY(true) * game.getCellSize();
+
+  displayController.drawImageOnUpperLayer(pointerImg.getImageData(), pointerImg.getWidth(), 
+      game.getCellSize(), game.getCellSize(),
+      x, y
+  );
+}
+
+void movePointer(int shiftX, int shiftY){
+  game.movePointer(shiftX, shiftY);
+  int oldCellData = game.getOldPointerData();
+  int cellSize = game.getCellSize();
+  int oldCellX = game.pointerX(false)*cellSize;
+  int oldCellY = game.pointerY(false)*cellSize;
+  int id = oldCellData;
+  if(oldCellData > 5){
+    id = 5;
+  }
+  displayController.drawImage(images[id].getImageData(), images[id].getWidth(), 
+  cellSize, cellSize,
+    oldCellX, oldCellY
+  );
+  if(oldCellData > 5){
+    displayController.drawImageOnUpperLayer(numberImages[oldCellData-5-1].getImageData(), numberImages[oldCellData-5-1].getWidth(), 
+    cellSize, cellSize,
+      oldCellX, oldCellY
+    );
+  }
+  displayController.drawImageOnUpperLayer(pointerImg.getImageData(), pointerImg.getWidth(), 
+    game.getCellSize(), game.getCellSize(),
+    game.pointerX(true)*game.getCellSize(), game.pointerY(true)*game.getCellSize()
+  );
+}
 
 void setup() {
   Serial.begin(9600);
-  srand(analogRead(millis()));  
+  srand(analogRead(micros()));  
   pinMode(TFT_CS, OUTPUT);
   pinMode(TFT_DC, OUTPUT);
   pinMode(TFT_RST, OUTPUT);
   
+  pinMode(SW_PIN, INPUT_PULLUP); // кнопка подтянута к VCC
+
   SPI.begin();
   SPI.beginTransaction(SPISettings(40000000, MSBFIRST, SPI_MODE0));
 
@@ -75,42 +87,30 @@ void setup() {
 
   displayController.fillScreen(COLOR565(30, 144, 52));  // очистка
   // delay(500);
-  ImageBmp<100> grass = ImageBmp<100>(10,10, grassImage);
-  ImageBmp<100> grassFlag = ImageBmp<100>(10,10, grassFlagImage);
-  ImageBmp<100> sand = ImageBmp<100>(10,10, sandImage);
   
-  Minesweep game(TFT_WIDTH, TFT_HEIGHT);
-  game.start(2,2);
-  ImageBmp<100> images[6] = {sand, grass, grassFlag, grassFlag, grass, grass};
-  auto& field = game.getField();
 
-  // displayController.drawImage(grass.getImageData(), grass.getWidth(), 40, 40, 25,30);
-  // delay(10000);
-  displayController.drawFieldByImages(
-    images, game.getCeilSize(), 6, field, game.getFieldWidth(), game.getFieldHeight() 
-  );
-  // displayController.drawImage(grassFlag.getImageData(), grassFlag.getWidth(), 40, 40, 65,30);
-  // displayController.drawImage(sand.getImageData(), sand.getWidth(), 40, 40, 25,70);
-  // displayController.drawImage(sand.getImageData(), sand.getWidth(), 40, 40, 65,70);
-
-
-  // Пример вывода
-  // Serial.println();
-  // Serial.write("Pixel Size: ");
-  // Serial.print(pixel_size);
-
-  // Пример заливок
-  // fillScreen(COLOR565(255, 0, 0)); delay(500);
-  // fillScreen(COLOR565(0, 255, 0)); delay(500);
-  // fillScreen(COLOR565(0, 0, 255)); delay(500);
-
-  // Нарисуем градиент
-  // for (uint16_t y = 0; y < TFT_HEIGHT; y++) {
-  //   for (uint16_t x = 0; x < TFT_WIDTH; x++) {
-  //     uint16_t color = COLOR565(x % 256, y % 256, (x + y) % 128);
-  //     drawPixel(x, y, color);
-  //   }
-  // }
+  game = Minesweep(TFT_WIDTH, TFT_HEIGHT);
+  // game.start(2,3);
+  drawField();
 }
 
-void loop() {}
+void loop() {
+  int yValue = analogRead(VRX_PIN); // 0–1023
+  int xValue = analogRead(VRY_PIN); // 0–1023
+  int button = digitalRead(SW_PIN); // 0 или 1
+
+
+  int shiftX = xValue > 512? -1: xValue < 512? 1: 0;
+  int shiftY = yValue > 512? -1: yValue < 512? 1: 0;
+
+  if(shiftX != 0 || shiftY != 0){
+    movePointer(shiftX, shiftY);
+  }
+  if(button == 0){
+    if(!game.isFieldLoaded()){
+      game.start();
+      drawField();
+    }
+  }
+  delay(50);
+}

@@ -10,7 +10,7 @@ class Field{
     int bombCount = 0;
 
     private:
-    void fillBy(Ceil item);
+    void fillBy(Cell item);
 
     public:
     Field(){};

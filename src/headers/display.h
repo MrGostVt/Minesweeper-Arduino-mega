@@ -24,5 +24,6 @@ class Display{
     void drawPixel(uint16_t x, uint16_t y, uint16_t color);
     void fillScreen(uint16_t color);
     void drawImage(const uint16_t *img, int img_len, int w, int h, int x, int y);
-    void drawFieldByImages(ImageBmp<100> *imgs, int ceil_size,int imgs_count, int (&field)[20][20], int field_w, int field_h);
+    void drawFieldByImages(ImageBmp<100> *imgs, int cell_size,int imgs_count, int (&field)[20][20], int field_w, int field_h);
+    void drawImageOnUpperLayer(const uint16_t *img, int img_len, int w, int h, int x, int y);
 };
