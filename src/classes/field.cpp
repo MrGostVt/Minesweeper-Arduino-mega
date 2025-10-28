@@ -41,30 +41,18 @@ void Field::fillFromStart(int start_x, int start_y, int bomb_count, Level lvl){
     }
 
     if(start_x - safeZoneDefault +1< 0){
-        Serial.println();
-        Serial.write("X ON LEFT ");
-        Serial.print(start_x - safeZoneDefault);
         start_x = 0 + safeZoneDefault/2;
     }
     if (start_y - safeZoneDefault +1< 0)
     {
-        Serial.println();
-        Serial.write("Y ON TOP ");
-        Serial.print(start_y - safeZoneDefault);
         start_y = 0 + safeZoneDefault/2;
     }
     if ( start_x + safeZoneDefault > width)
     {
-        Serial.println();
-        Serial.write("X ON RIGHT ");
-        Serial.print(start_x + safeZoneDefault);
         start_x = width-1 - safeZoneDefault/2;
     }
     if (start_y + safeZoneDefault > height)
     {
-        Serial.println();
-        Serial.write("y on down ");
-        Serial.print(start_y + safeZoneDefault);
         start_y = height-1 - safeZoneDefault/2;
     }
     

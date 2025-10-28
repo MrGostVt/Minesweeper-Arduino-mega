@@ -141,54 +141,70 @@ void Display::fillScreen(uint16_t color) {
     digitalWrite(TFT_CS, HIGH);
 }
 
-void Display::drawImage(const uint16_t *img, int img_len, int w, int h, int x, int y) {
+void Display::drawImage(ImageBmp img, int w, int h, int x, int y) {
     int pixel_size = 1;
     if(w == h){
-      if(img_len != w){
-        pixel_size = w / img_len;
+      if(img.getWidth() != w){
+        pixel_size = w / img.getWidth();
       }
     }
   
     for(int j = 0; j < h; j++){
       for(int i = 0; i < w; i++){
-        int index = j/pixel_size * img_len + i/pixel_size;
-        drawPixel(i + x, j + y, img[index]);
+        int index = j/pixel_size * img.getWidth() + i/pixel_size;
+        drawPixel(i + x, j + y, img.getPixel(index));
       }
     }
 }
 
-void Display::drawFieldByImages(ImageBmp<100> *imgs, int cell_size,int imgs_count, int (&field)[20][20], int field_w, int field_h){
+void Display::drawFieldByImages(int cell_size, uint8_t (&field)[20][20], int field_w, int field_h){
   for(int j = 0; j < field_h; j++){
     for(int i = 0; i < field_w; i++){
       int id = field[j][i];
-      ImageBmp<100> currentCeil = imgs[id];
-      if(id > 5){
-        currentCeil = imgs[0];
+      if(!readLastFrame(j,i,id)){
+      // if(true){
+        ImageBmp currentCell = images[id];
+        if(id > 5){
+          currentCell = images[0];
+        }
+        
+        drawImage(currentCell, cell_size, cell_size, i * cell_size, j*cell_size);
+        
+        if(id > 5){
+          drawImageOnUpperLayer(numberImages[id-6],
+            cell_size, cell_size, i * cell_size, j*cell_size
+          );
+        }
+
+        saveLastFrame(j,i, id);
       }
-      
-      drawImage(currentCeil.getImageData(), currentCeil.getWidth(), cell_size, cell_size, i * cell_size, j*cell_size);
-      
-      if(id > 5){
-        drawImageOnUpperLayer(numberImages[id-5-1].getImageData(), numberImages[id-5-1].getWidth(), cell_size, cell_size, i * cell_size, j*cell_size);
-      }
-    }
+    }  
   }
 }
 
-void Display::drawImageOnUpperLayer(const uint16_t *img, int img_len, int w, int h, int x, int y){
+
+void Display::drawImageOnUpperLayer(ImageBmp img, int w, int h, int x, int y) {
   int pixel_size = 1;
   if(w == h){
-    if(img_len != w){
-      pixel_size = w / img_len;
+    if(img.getWidth() != w){
+      pixel_size = w / img.getWidth();
     }
   }
 
   for(int j = 0; j < h; j++){
     for(int i = 0; i < w; i++){
-      int index = j/pixel_size * img_len + i/pixel_size;
-      if(img[index] != 0xffff){
-        drawPixel(i + x, j + y, img[index]);
+      int index = j/pixel_size * img.getWidth() + i/pixel_size;
+      if(img.getPixel(index) != 0xffff){
+        drawPixel(i + x, j + y, img.getPixel(index));
       }
     }
   }
+}
+
+void Display::saveLastFrame(int j, int i, int pixelData){
+  lastFrame[j][i] = pixelData;
+}
+
+bool Display::readLastFrame(int j, int i, int pixelData){
+  return lastFrame[j][i] == pixelData;
 }

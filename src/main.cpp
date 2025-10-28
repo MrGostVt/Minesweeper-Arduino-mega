@@ -28,18 +28,16 @@ Minesweep game;
 
 
 void drawField(){
+  int cell = game.getCellSize();
   auto& field = game.getField();
   displayController.drawFieldByImages(
-    images, game.getCellSize(), 6, field, game.getFieldWidth(), game.getFieldHeight() 
+    cell, field, game.getFieldWidth(), game.getFieldHeight() 
   );
 
-  int x = game.pointerX(true) * game.getCellSize();
-  int y = game.pointerY(true) * game.getCellSize();
+  int x = game.pointerX(true) * cell;
+  int y = game.pointerY(true) * cell;
 
-  displayController.drawImageOnUpperLayer(pointerImg.getImageData(), pointerImg.getWidth(), 
-      game.getCellSize(), game.getCellSize(),
-      x, y
-  );
+  displayController.drawImageOnUpperLayer(pointerImg, cell, cell, x, y);
 }
 
 void movePointer(int shiftX, int shiftY){
@@ -52,18 +50,14 @@ void movePointer(int shiftX, int shiftY){
   if(oldCellData > 5){
     id = 5;
   }
-  displayController.drawImage(images[id].getImageData(), images[id].getWidth(), 
-  cellSize, cellSize,
-    oldCellX, oldCellY
-  );
+  // Serial.println();
+  // Serial.write("Cell data: ");
+  // Serial.print(oldCellData-5-1);
+  displayController.drawImage(images[id], cellSize, cellSize, oldCellX, oldCellY);
   if(oldCellData > 5){
-    displayController.drawImageOnUpperLayer(numberImages[oldCellData-5-1].getImageData(), numberImages[oldCellData-5-1].getWidth(), 
-    cellSize, cellSize,
-      oldCellX, oldCellY
-    );
+    displayController.drawImageOnUpperLayer(numberImages[oldCellData-5-1], cellSize, cellSize, oldCellX, oldCellY);
   }
-  displayController.drawImageOnUpperLayer(pointerImg.getImageData(), pointerImg.getWidth(), 
-    game.getCellSize(), game.getCellSize(),
+  displayController.drawImageOnUpperLayer(pointerImg,game.getCellSize(), game.getCellSize(),
     game.pointerX(true)*game.getCellSize(), game.pointerY(true)*game.getCellSize()
   );
 }

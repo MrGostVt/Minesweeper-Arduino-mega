@@ -1,12 +1,14 @@
 #pragma once
 #include <headers/utils.h>
+#include <Arduino.h>
+#include <SPI.h>
 
 class Field{
     private:
     int width;
     int height;
 
-    int field [20][20];
+    uint8_t field [20][20];
     int bombCount = 0;
 
     private:
@@ -19,7 +21,7 @@ class Field{
     void reset(int size_w, int size_h);
     void fillByGrass();
     void fillFromStart(int start_x, int start_y, int bomb_count, Level lvl);
-    int (&getField())[20][20]{
+    uint8_t (&getField())[20][20]{
         return field;
     }
 };

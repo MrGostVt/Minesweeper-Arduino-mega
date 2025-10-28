@@ -25,7 +25,7 @@ class Minesweep{
     private:
     void calculateFieldSizes();
     public:
-    int (&getField())[20][20]{
+    uint8_t (&getField())[20][20]{
         return field.getField();
     }
     int getCellSize(){
