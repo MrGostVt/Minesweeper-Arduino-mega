@@ -13,3 +13,4 @@ extern const uint16_t number3[100];
 extern const uint16_t number2[100];
 extern const uint16_t number1[100];
 extern const uint16_t pointerImage[100];
+extern const uint16_t openedBombImage[100];

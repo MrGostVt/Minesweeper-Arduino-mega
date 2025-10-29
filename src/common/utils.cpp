@@ -18,4 +18,5 @@ ImageBmp grass = ImageBmp(10,10, grassImage);
 ImageBmp grassFlag = ImageBmp(10,10, grassFlagImage);
 ImageBmp sand = ImageBmp(10,10, sandImage);
 ImageBmp pointerImg = ImageBmp(10,10, pointerImage);
-ImageBmp images[6] = {sand, grass, grassFlag, grassFlag, grass, sand};
+ImageBmp openedBombImg = ImageBmp(10,10, openedBombImage);
+ImageBmp images[7] = {sand, grass, grassFlag, grassFlag, openedBombImg, grassFlag, sand};

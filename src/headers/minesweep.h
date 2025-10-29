@@ -15,7 +15,7 @@ class Minesweep{
     Level gameLevel = EASY;
     Field field;
     bool fieldFillStatus = false;
-
+    bool isStarted = false;
 
     public:
     Minesweep(){}
@@ -37,14 +37,8 @@ class Minesweep{
     int getFieldHeight(){
         return fieldHeight;
     }
-    void start(int position_x, int position_y){
-        field.fillFromStart(position_x,position_y,bombCount, gameLevel);
-        fieldFillStatus = true;
-    }
-    void start(){
-        field.fillFromStart(pointerX(true),pointerY(true),bombCount, gameLevel);
-        fieldFillStatus = true;
-    }
+    void start(int position_x, int position_y);
+    void start();
     void movePointer(int x, int y);
     //Old - false, current - true;
     int pointerX(bool type){
@@ -63,4 +57,9 @@ class Minesweep{
     bool isFieldLoaded(){
         return fieldFillStatus;
     }
+    void dig();
+    void flagAction();
+    bool checkGameComplection();
+    void restart();
+    // void restart();
 };

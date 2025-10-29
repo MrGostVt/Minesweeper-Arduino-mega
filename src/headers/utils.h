@@ -14,6 +14,7 @@ enum Cell {
     GRASS,
     FLAG,
     BOMB,
+    OPENEDBOMB,
     FLAGONBOMB,
     NUMBER,
 };
@@ -23,4 +24,4 @@ extern ImageBmp grass;
 extern ImageBmp grassFlag;
 extern ImageBmp sand;
 extern ImageBmp pointerImg;
-extern ImageBmp images[6];
+extern ImageBmp images[7];

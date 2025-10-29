@@ -47,15 +47,15 @@ void movePointer(int shiftX, int shiftY){
   int oldCellX = game.pointerX(false)*cellSize;
   int oldCellY = game.pointerY(false)*cellSize;
   int id = oldCellData;
-  if(oldCellData > 5){
-    id = 5;
+  if(oldCellData > 6){
+    id = 6;
   }
   // Serial.println();
   // Serial.write("Cell data: ");
   // Serial.print(oldCellData-5-1);
   displayController.drawImage(images[id], cellSize, cellSize, oldCellX, oldCellY);
-  if(oldCellData > 5){
-    displayController.drawImageOnUpperLayer(numberImages[oldCellData-5-1], cellSize, cellSize, oldCellX, oldCellY);
+  if(oldCellData > 6){
+    displayController.drawImageOnUpperLayer(numberImages[oldCellData-7], cellSize, cellSize, oldCellX, oldCellY);
   }
   displayController.drawImageOnUpperLayer(pointerImg,game.getCellSize(), game.getCellSize(),
     game.pointerX(true)*game.getCellSize(), game.pointerY(true)*game.getCellSize()
@@ -88,10 +88,13 @@ void setup() {
   drawField();
 }
 
+
+//TODO: На завтра, сделать действие, считывать удержание кнопки для определённого действия
+
 void loop() {
   int yValue = analogRead(VRX_PIN); // 0–1023
   int xValue = analogRead(VRY_PIN); // 0–1023
-  int button = digitalRead(SW_PIN); // 0 или 1
+  int buttonInfo = digitalRead(SW_PIN); // 0 или 1
 
 
   int shiftX = xValue > 512? -1: xValue < 512? 1: 0;
@@ -100,10 +103,30 @@ void loop() {
   if(shiftX != 0 || shiftY != 0){
     movePointer(shiftX, shiftY);
   }
-  if(button == 0){
+  if(buttonInfo == 0){
     if(!game.isFieldLoaded()){
       game.start();
+      Serial.println();
+      Serial.write("game started: ");
+      // Serial.print(oldCellData-5-1);
       drawField();
+    }
+    else{
+      delay(500);
+      int newestButtonInfo = digitalRead(SW_PIN);
+      if(newestButtonInfo == 0){
+        game.flagAction();
+      }
+      else{
+        game.dig();        
+      }
+      drawField();
+      bool isGameActive = game.checkGameComplection();
+      if(!isGameActive){
+        delay(100);
+        game  = Minesweep(TFT_WIDTH, TFT_HEIGHT);
+        drawField();
+      }
     }
   }
   delay(50);

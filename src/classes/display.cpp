@@ -164,14 +164,14 @@ void Display::drawFieldByImages(int cell_size, uint8_t (&field)[20][20], int fie
       if(!readLastFrame(j,i,id)){
       // if(true){
         ImageBmp currentCell = images[id];
-        if(id > 5){
+        if(id > 6){
           currentCell = images[0];
         }
         
         drawImage(currentCell, cell_size, cell_size, i * cell_size, j*cell_size);
         
-        if(id > 5){
-          drawImageOnUpperLayer(numberImages[id-6],
+        if(id > 6){
+          drawImageOnUpperLayer(numberImages[id-7],
             cell_size, cell_size, i * cell_size, j*cell_size
           );
         }
