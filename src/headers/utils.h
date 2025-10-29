@@ -19,6 +19,11 @@ enum Cell {
     NUMBER,
 };
 
+enum GameState {
+    LEVELSCREEN,
+    GAME,
+};
+
 extern ImageBmp numberImages[8];
 extern ImageBmp grass;
 extern ImageBmp grassFlag;

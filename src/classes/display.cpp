@@ -169,7 +169,7 @@ void Display::drawFieldByImages(int cell_size, uint8_t (&field)[20][20], int fie
       else{
         currentCell = images[id];
       }
-      if(!readLastFrame(j,i, currentCell.id)){
+      if(!readLastFrame(j,i, currentCell.id) || cell_size != lastFrameCell){
         
         drawImage(currentCell, cell_size, cell_size, i * cell_size, j*cell_size);
         
@@ -183,6 +183,8 @@ void Display::drawFieldByImages(int cell_size, uint8_t (&field)[20][20], int fie
       }
     }  
   }
+
+  lastFrameCell = cell_size;
 }
 
 
@@ -211,3 +213,16 @@ void Display::saveLastFrame(int j, int i, int pixelData){
 bool Display::readLastFrame(int j, int i, int pixelData){
   return lastFrame[j][i] == pixelData;
 }
+
+void Display::drawButton(bool isSelected, int y, uint16_t color){
+  int left = isSelected? (WIDTH - buttonWidth) / 2 - 10:(WIDTH - buttonWidth) / 2;
+  int top = isSelected? y-10: y;
+  int width = isSelected? buttonWidth + 20: buttonWidth;
+  for(int j = top; j < top + buttonHeight; j++){
+    for(int i = left; i < left + width; i++){
+      drawPixel(i, j, color);
+      lastFrame[j/lastFrameCell][i/lastFrameCell] = 0;
+    }
+  }
+}
+

@@ -89,3 +89,7 @@ void Minesweep::restart(){
     oldPointer[1] = 0;
 }
 
+void Minesweep::setLevel(Level lvl){
+    gameLevel = lvl;
+    calculateFieldSizes();
+}

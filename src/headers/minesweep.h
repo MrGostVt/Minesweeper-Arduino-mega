@@ -61,5 +61,6 @@ class Minesweep{
     void flagAction();
     bool checkGameComplection();
     void restart();
+    void setLevel(Level lvl);
     // void restart();
 };
