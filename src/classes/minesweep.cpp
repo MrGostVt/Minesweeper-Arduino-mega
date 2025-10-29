@@ -44,24 +44,24 @@ int Minesweep::getOldPointerData(){
 }
 
 void Minesweep::dig(){
+    Serial.println();
+    Serial.write("DIG!: ");
     bool isBomb = field.dig(pointerX(true), pointerY(true));
-    isStarted = isBomb;
+    isStarted = !isBomb;
 }
 
 void Minesweep::flagAction(){
     int cell = field.checkCell(pointerX(true), pointerY(true));
     if(cell == FLAGONBOMB || cell == FLAG ){
-        bool isFieldClean = field.removeFlag(pointerX(true), pointerY(true));
+        isStarted = !field.removeFlag(pointerX(true), pointerY(true));
         return;
     }
     if(cell == SAND){
         return;
     }
 
-    bool isFieldClean = field.placeFlag(pointerX(true), pointerY(true));
-    if(isFieldClean){
-        isStarted = false;
-    }
+    isStarted = !field.placeFlag(pointerX(true), pointerY(true));
+
 }
 
 void Minesweep::start(int position_x, int position_y){

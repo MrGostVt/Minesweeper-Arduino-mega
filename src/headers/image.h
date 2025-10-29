@@ -8,11 +8,13 @@ class ImageBmp{
     int width;
     int height;
     const uint16_t* imageData;
+    
+    public: int id;
 
     public:
     ImageBmp(){};
-    ImageBmp(int img_width, int img_height, const uint16_t* image_data)
-        : width(img_width), height(img_height), imageData(image_data)
+    ImageBmp(int img_width, int img_height, const uint16_t* image_data, int identifier)
+        : width(img_width), height(img_height), imageData(image_data), id(identifier)
     {}
     boolean isSquare(){
         return width == height;

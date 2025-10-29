@@ -161,12 +161,15 @@ void Display::drawFieldByImages(int cell_size, uint8_t (&field)[20][20], int fie
   for(int j = 0; j < field_h; j++){
     for(int i = 0; i < field_w; i++){
       int id = field[j][i];
-      if(!readLastFrame(j,i,id)){
-      // if(true){
-        ImageBmp currentCell = images[id];
-        if(id > 6){
-          currentCell = images[0];
-        }
+
+      ImageBmp currentCell;
+      if(id > 6){
+        currentCell = images[6];
+      }
+      else{
+        currentCell = images[id];
+      }
+      if(!readLastFrame(j,i, currentCell.id)){
         
         drawImage(currentCell, cell_size, cell_size, i * cell_size, j*cell_size);
         
@@ -176,7 +179,7 @@ void Display::drawFieldByImages(int cell_size, uint8_t (&field)[20][20], int fie
           );
         }
 
-        saveLastFrame(j,i, id);
+        saveLastFrame(j,i, currentCell.id);
       }
     }  
   }

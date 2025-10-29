@@ -12,7 +12,7 @@ class Field{
     int bombsOnField = 0;
     int flagsOnBombs = 0;
     int flagsOnField = 0;
-
+    
     private:
     void fillBy(Cell item);
 
@@ -33,4 +33,5 @@ class Field{
     int checkCell(int x, int y){
         return field[y][x];
     }
+    void digAround(int x, int y);
 };

@@ -115,26 +115,7 @@ void Field::fillFromStart(int start_x, int start_y, int bomb_count, Level lvl){
     }
 }
 
-int Field::checkBombCount(int x, int y){
-    int bombAroundCount = 0;
-
-    for(int j = y - 1; j < y + 2; j++){
-        for(int i = x - 1; i < x + 2; i++){
-            if(field[j][i] == BOMB || field[j][i] == FLAGONBOMB || field[j][i] == OPENEDBOMB){
-                bombAroundCount++;
-            }
-        }
-    }
-    return bombAroundCount;
-}
-
 bool Field::placeFlag(int x, int y){
-        
-    // Serial.println();
-    // Serial.write("Flag count check! Flag on field: ");
-    // Serial.print(flagsOnField);
-    // Serial.write(" Flag on bomb: ");
-    // Serial.print(flagsOnBombs);
 
     if(flagsOnField + flagsOnBombs >= bombsOnField){
         return false;
@@ -181,18 +162,30 @@ bool Field::removeFlag(int x, int y){
     return false;
 }
 
+int Field::checkBombCount(int x, int y){
+    int bombAroundCount = 0;
+
+    for(int j = y - 1; j < y + 2; j++){
+        for(int i = x - 1; i < x + 2; i++){
+            if(field[j][i] == BOMB || field[j][i] == FLAGONBOMB || field[j][i] == OPENEDBOMB){
+                bombAroundCount++;
+            }
+        }
+    }
+    return bombAroundCount;
+}
+
 bool Field::dig(int x, int y){
     int cell = field[y][x];
-    switch (cell)
-    {
-        case BOMB:
-            field[y][x] = OPENEDBOMB;
-            return true;
-        case GRASS:
-            int bombAroundCount = checkBombCount(x, y);
-            field[y][x] = NUMBER + bombAroundCount;
-            return false;
-        default:
-            return false;
+    if(cell == BOMB || cell == FLAGONBOMB){
+        field[y][x] = OPENEDBOMB;
+        return true;
     }
+    else if(cell == GRASS){
+        int bombAroundCount = checkBombCount(x, y);
+        field[y][x] = NUMBER + bombAroundCount;
+        return false;
+    }
+
+    return false;
 }

@@ -121,10 +121,11 @@ void loop() {
         game.dig();        
       }
       drawField();
-      bool isGameActive = game.checkGameComplection();
-      if(!isGameActive){
-        delay(100);
-        game  = Minesweep(TFT_WIDTH, TFT_HEIGHT);
+      delay(500);
+
+      bool isGameFinished = game.checkGameComplection();
+      if(isGameFinished){
+        game = Minesweep(TFT_WIDTH, TFT_HEIGHT);
         drawField();
       }
     }
