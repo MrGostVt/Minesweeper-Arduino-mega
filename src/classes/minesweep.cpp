@@ -17,7 +17,7 @@ void Minesweep::calculateFieldSizes(){
     }
     fieldWidth = screenWidth/cellSize;
     fieldHeight = screenHeight/cellSize;
-    bombCount = fieldHeight * 2;
+    bombCount = fieldHeight * 2 * gameLevel + 1;
     
     field = Field(fieldWidth, fieldHeight);
     field.fillByGrass();

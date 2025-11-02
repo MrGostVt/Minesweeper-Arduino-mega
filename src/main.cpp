@@ -25,6 +25,9 @@
 
 Display displayController(0,0,0,0,0);
 Minesweep game;
+GameState state;
+Buttons<3> buttons;
+
 
 
 void drawField(){
@@ -37,7 +40,9 @@ void drawField(){
   int x = game.pointerX(true) * cell;
   int y = game.pointerY(true) * cell;
 
-  displayController.drawImageOnUpperLayer(pointerImg, cell, cell, x, y);
+  if(state == GAME){
+    displayController.drawImageOnUpperLayer(pointerImg, cell, cell, x, y);
+  }
 }
 
 void movePointer(int shiftX, int shiftY){
@@ -62,14 +67,12 @@ void movePointer(int shiftX, int shiftY){
   );
 }
 
-GameState state;
-Buttons<3> buttons;
-
 void prepareGame(){
+  state = LEVELSCREEN;
   game = Minesweep(TFT_WIDTH, TFT_HEIGHT);
+  game.setLevel(static_cast<Level>(buttons.selected));
   // game.start(2,3);
   drawField();
-  state = LEVELSCREEN;
 
   displayController.drawButtons<3>(buttons);
 }
@@ -147,7 +150,7 @@ void loop() {
     displayController.drawButtons<3>(buttons);
   }
 
-  if(shiftX != 0 || shiftY != 0 && state == GAME){
+  if((shiftX != 0 || shiftY != 0) && state == GAME){
     movePointer(shiftX, shiftY);
   }
 

@@ -43,6 +43,8 @@ void Field::fillFromStart(int start_x, int start_y, int bomb_count, Level lvl){
         case HARD: safeZoneDefault = 5; safeZoneAdditional = 3; break;
     }
 
+    safeZoneDefault = 3; //Fix
+
     if(start_x - safeZoneDefault +1< 0){
         start_x = 0 + safeZoneDefault/2;
     }
@@ -60,12 +62,12 @@ void Field::fillFromStart(int start_x, int start_y, int bomb_count, Level lvl){
     }
 
 
-    for(int i = 0; i < 2; i++){
-        int safeZoneX = rand() % 2 - 1;
-        int safeZoneY = rand() % 2 - 1;
-        safeZoneCoords[i] = safeZoneX;
-        safeZoneCoords[i+2] = safeZoneY;
-    }
+    // for(int i = 0; i < 2; i++){
+    //     int safeZoneX = rand() % 2 - 1;
+    //     int safeZoneY = rand() % 2 - 1;
+    //     safeZoneCoords[i] = safeZoneX;
+    //     safeZoneCoords[i+2] = safeZoneY;
+    // }
 
     int currentBombCount = bomb_count;
     for(int j = 0; j < height; j++){
@@ -74,15 +76,11 @@ void Field::fillFromStart(int start_x, int start_y, int bomb_count, Level lvl){
 
         for(int b = 0; b < lineBombsCount; b++){
             bombsX[b] = rand() % width;
-            // Serial.print(bombsX[b]);
-            // Serial.write(" ");
         }
 
         for(int i = 0; i < width; i++){
-            boolean isInDefaultZone = start_x-1 <= i && start_y-1 <=j && start_x+1 >= i && start_y+1 >= j ;
-
-            // bool isInAdditionalZone; && 
-            // for()
+            boolean isInDefaultZone = start_x-safeZoneDefault/2 <= i && start_y-safeZoneDefault/2 <=j && start_x+safeZoneDefault/2 >= i && start_y+safeZoneDefault/2 >= j ;
+        
             bool isBomb = false;
             for(int b = 0; b < lineBombsCount; b++){
                 isBomb = i == bombsX[b];
@@ -175,7 +173,18 @@ int Field::checkBombCount(int x, int y){
     return bombAroundCount;
 }
 
-bool Field::dig(int x, int y){
+void Field::digAround(int x, int y){
+    for(int j = y - 1; j < y + 2; j++){
+        for(int i = x - 1; i < x + 2; i++){
+            if(field[j][i] == GRASS && (field[j][i + 1] == GRASS || field[j][i - 1] == GRASS 
+                || field[j + 1][i] == GRASS || field[j - 1][i] == GRASS) ){
+                dig(i,j, false);
+            }
+        }
+    }
+}
+
+bool Field::dig(int x, int y, bool isDigAround = true){
     int cell = field[y][x];
     if(cell == BOMB || cell == FLAGONBOMB){
         field[y][x] = OPENEDBOMB;
@@ -184,6 +193,9 @@ bool Field::dig(int x, int y){
     else if(cell == GRASS){
         int bombAroundCount = checkBombCount(x, y);
         field[y][x] = NUMBER + bombAroundCount;
+        if(isDigAround){
+            digAround(x,y);
+        }
         return false;
     }
 

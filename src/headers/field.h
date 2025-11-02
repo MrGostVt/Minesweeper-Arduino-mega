@@ -29,7 +29,7 @@ class Field{
     bool placeFlag(int x, int y);
     bool removeFlag(int x, int y);
     int checkBombCount(int x, int y);
-    bool dig(int x, int y);
+    bool dig(int x, int y, bool isDigAround = true);
     int checkCell(int x, int y){
         return field[y][x];
     }
