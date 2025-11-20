@@ -193,7 +193,7 @@ bool Field::dig(int x, int y, bool isDigAround = true){
     else if(cell == GRASS){
         int bombAroundCount = checkBombCount(x, y);
         field[y][x] = NUMBER + bombAroundCount;
-        if(isDigAround){
+        if(isDigAround && bombAroundCount == 0){
             digAround(x,y);
         }
         return false;

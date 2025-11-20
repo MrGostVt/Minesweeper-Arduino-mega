@@ -21,7 +21,7 @@
 #define SW_PIN  A2
 
 //rgb565 macros
-#define COLOR565(r, g, b) ((((r) & 0xF8) << 8) | (((g) & 0xFC) << 3) | ((b) >> 3))
+  #define COLOR565(r, g, b) ((((r) & 0xF8) << 8) | (((g) & 0xFC) << 3) | ((b) >> 3))
 
 Display displayController(0,0,0,0,0);
 Minesweep game;
